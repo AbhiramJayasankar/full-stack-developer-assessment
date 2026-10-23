@@ -10,3 +10,4 @@ __pycache__/
 celerybeat-schedule*
 *.rdb
 *.aof
+recording-output/
