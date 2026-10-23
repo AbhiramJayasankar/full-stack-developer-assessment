@@ -518,5 +518,12 @@
     1792793029534,
     1792793029545,
     1792793029556
-  ]
+  ],
+  "audio_postproduction": {
+    "engine": "Kokoro via kokoro-onnx",
+    "voice": "af_heart",
+    "speech_speed": 1.0,
+    "generated_offline": true,
+    "original_video_stream_preserved": true
+  }
 }

@@ -73,7 +73,7 @@ in a clean runner with real Redis. No external provider credentials are needed.
 
 [Watch or download the 5-minute 30-second queue walkthrough](https://github.com/AbhiramJayasankar/full-stack-developer-assessment/raw/refs/heads/main/evidence/queue-walkthrough.mp4).
 
-This is a live cloud capture with synthetic narration and on-screen captions. It starts from a fresh shell, queues 500 jobs, and shows the worker, Redis state, full 60-second rate windows, and one deliberate HTTP 503 followed by a successful retry. The run uses an isolated demo database and Redis database 14. The provider simulates acceptance; no real email is sent.
+This is a live cloud capture with Kokoro neural narration (`af_heart`) and on-screen captions. The voice is synthesized offline. It starts from a fresh shell, queues 500 jobs, and shows the worker, Redis state, full 60-second rate windows, and one deliberate HTTP 503 followed by a successful retry. The run uses an isolated demo database and Redis database 14. The provider simulates acceptance; no real email is sent.
 
 The video, [subtitles](evidence/queue-walkthrough.srt), and [timestamp report](evidence/queue-recording-report.json) are in `evidence/`. The report is checked for 500 sent jobs, 500 durable deliveries, one provider failure, and no more than 200 admissions in any rolling minute.
 
