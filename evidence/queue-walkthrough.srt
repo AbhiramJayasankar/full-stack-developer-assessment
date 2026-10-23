@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:25,000
+This is a live cloud recording of the email queue. The narration is synthetic. We will submit five hundred jobs, watch Redis enforce two hundred attempts per rolling minute, and see one deliberate provider failure retry. The provider is a local simulator; no real email is sent.
+
+2
+00:00:25,000 --> 00:00:50,000
+This is a new shell with the project virtual environment activated. The demo uses its own SQLite database and a separate Redis database. First we apply the Django migrations and check that the application starts cleanly. The production limiter settings remain two hundred attempts in sixty seconds.
+
+3
+00:00:50,000 --> 00:01:15,000
+The local provider returns HTTP five oh three on its first request. Every later request succeeds and uses the job identifier to deduplicate delivery. We submit all five hundred jobs before starting the worker, so we can see the accepted jobs waiting in the database and broker.
+
+4
+00:01:15,000 --> 00:01:40,000
+The Celery worker and beat scheduler are now running. The worker claims each database row before requesting a permit. Beat periodically republishes due jobs and recovers expired leases. Duplicate broker messages are harmless because only one worker can claim a due row at a time.
+
+5
+00:01:40,000 --> 00:02:05,000
+The first two hundred permits have been used. One attempt failed deliberately, so there are fewer successful deliveries than permits. Celery retries that failure with exponential backoff. The retry still needs a fresh permit; it cannot bypass the global quota.
+
+6
+00:02:05,000 --> 00:02:30,000
+The queue is still holding pending work while the rolling window is full. The Lua script returns the time until another permit is available. Celery schedules a countdown retry. The task does not call time dot sleep or hold a worker slot while waiting for the next window.
+
+7
+00:02:30,000 --> 00:02:55,000
+As the oldest Redis timestamps leave the sixty second window, more attempts are admitted. The green rolling counter is calculated from real Redis sorted set scores. The maximum counter checks every recorded admission against the same rolling window, including retries.
+
+8
+00:02:55,000 --> 00:03:20,000
+The provider log retains the deliberate five oh three response. The database inspection shows the job failure count, and the Celery log shows scheduled retries. Rate limit deferrals do not consume the provider failure budget. Provider failures do, and the fifth failure would move a job to the dead letter table.
+
+9
+00:03:20,000 --> 00:03:45,000
+The final group is admitted after enough earlier timestamps expire. Five hundred successful jobs require five hundred and one permits here because the intentional failure also counts. The delivery table has a unique row per job, which simulates provider side idempotency.
+
+10
+00:03:45,000 --> 00:04:10,000
+The final checks compare submitted jobs, sent rows and durable provider deliveries. All five hundred should match. The recorded admission trace is checked for any rolling count above two hundred. That checks every admission, rather than relying only on what happens to be visible during a screen refresh.
+
+11
+00:04:10,000 --> 00:04:35,000
+The implementation acknowledges tasks late and rejects tasks when a worker child is lost. Redis can restore unacknowledged messages after its visibility timeout. A database lease and the beat recovery scan also make interrupted jobs eligible again. Provider idempotency handles a crash after acceptance but before the sent row is committed.
+
+12
+00:04:35,000 --> 00:05:00,000
+The limiter uses Redis server time, removes expired sorted set entries, checks the count and inserts a unique attempt identifier. Those operations run in one atomic Lua script shared by every worker. Redis errors fail closed, so a worker will not contact the provider without a permit.
+
+13
+00:05:00,000 --> 00:05:30,000
+This is a local single worker demonstration using SQLite. PostgreSQL is the intended database for production concurrency. The repository includes tests, captured query profiles and the queue design. The final recording report contains the real timestamps and job counts so the results can be checked independently.

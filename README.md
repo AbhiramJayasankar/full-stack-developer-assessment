@@ -71,10 +71,10 @@ in a clean runner with real Redis. No external provider credentials are needed.
 
 ## Recorded walkthrough
 
-[Watch or download the 5-minute 30-second queue walkthrough](https://github.com/AbhiramJayasankar/full-stack-developer-assessment/releases/download/queue-walkthrough/queue-walkthrough.mp4).
+[Watch or download the 5-minute 30-second queue walkthrough](https://github.com/AbhiramJayasankar/full-stack-developer-assessment/raw/refs/heads/main/evidence/queue-walkthrough.mp4).
 
 This is a live cloud capture with synthetic narration and on-screen captions. It starts from a fresh shell, queues 500 jobs, and shows the worker, Redis state, full 60-second rate windows, and one deliberate HTTP 503 followed by a successful retry. The run uses an isolated demo database and Redis database 14. The provider simulates acceptance; no real email is sent.
 
-The release also includes subtitles and the timestamp report. The report is checked for 500 sent jobs, 500 durable deliveries, one provider failure, and no more than 200 admissions in any rolling minute.
+The video, [subtitles](evidence/queue-walkthrough.srt), and [timestamp report](evidence/queue-recording-report.json) are in `evidence/`. The report is checked for 500 sent jobs, 500 durable deliveries, one provider failure, and no more than 200 admissions in any rolling minute.
 
 To try the one-time failure locally, run `python scripts/demo_provider.py` in another terminal and set `EMAIL_PROVIDER_URL=http://127.0.0.1:8765` in the worker's terminal before starting Celery. The simulator rejects its first request with HTTP 503 and deduplicates later requests by job ID. Use `python scripts/queue_status.py` to check progress without printing email addresses or bodies.

@@ -16,6 +16,6 @@ its timestamps permit independently checking every rolling window.
 
 The recorded walkthrough has a separate `queue-recording-report.json` containing
 the live capture's 501 admission timestamps and final database counts. The MP4
-and subtitles are attached to the `queue-walkthrough` GitHub release linked in
+and subtitles are stored alongside the report in this directory and linked in
 the root README. Narration is synthetic; the queue, database and Redis activity
 are real.
