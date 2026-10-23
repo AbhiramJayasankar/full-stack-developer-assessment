@@ -1,0 +1,19 @@
+{
+  "order_count": 250,
+  "source": "django-silk Request.queries",
+  "before": {
+    "path": "/demo/orders/broken/",
+    "query_count": 251,
+    "sql_examples": [
+      "SELECT \"orders_order\".\"id\", \"orders_order\".\"customer_id\", \"orders_order\".\"total\" FROM \"orders_order\" ORDER BY \"orders_order\".\"id\" ASC",
+      "SELECT \"orders_customer\".\"id\", \"orders_customer\".\"name\" FROM \"orders_customer\" WHERE \"orders_customer\".\"id\" = 1 LIMIT 21"
+    ]
+  },
+  "after": {
+    "path": "/api/orders/summary/",
+    "query_count": 1,
+    "sql_examples": [
+      "SELECT \"orders_order\".\"id\", \"orders_order\".\"customer_id\", \"orders_order\".\"total\", \"orders_customer\".\"id\", \"orders_customer\".\"name\" FROM \"orders_order\" INNER JOIN \"orders_customer\" ON (\"orders_order\".\"customer_id\" = \"orders_customer\".\"id\") ORDER BY \"orders_order\".\"id\" ASC"
+    ]
+  }
+}

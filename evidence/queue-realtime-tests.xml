@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="123.597" timestamp="2026-10-23T16:34:43.783963-05:00" hostname="a022d3ef53e3"><testcase classname="tests.test_burst" name="test_500_jobs_no_loss_rate_limited_and_retried" time="123.474" /></testsuite></testsuites>
